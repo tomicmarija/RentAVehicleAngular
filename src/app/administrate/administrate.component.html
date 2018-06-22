@@ -1,0 +1,84 @@
+<p></p>
+<p>
+  <button (click)="callGetServices()" type="button" class="btn btn-default btn-lg btn-outline-dark btn-block">Show services</button>
+  <button (click)="callGetUsers()" type="button" class="btn btn-default btn-lg btn-outline-dark btn-block">Show accounts</button>
+  <button (click)="callGetManagers()" type="button" class="btn btn-default btn-lg btn-outline-dark btn-block">Show managers</button>
+</p>
+
+<div *ngIf="showServices">
+<table class="table table-striped table-dark" >
+  <tbody *ngFor = "let item of unapprovedServices  | paginate: { itemsPerPage:5, currentPage: pS }">
+      <tr>
+          <td style="width: 250px;"><img width="200"  src="https://localhost:44375{{item.Logo}}" /></td>
+          <td colspan="2"><b>{{item.Name}}</b> <p>{{item.Descritpion}}</p> <p>{{item.Email}}</p> </td>
+          <td><br><b>APPROVE: </b> <input style="margin-left: 25px" type="checkbox" [(ngModel)]= "item.Approved" (change)="onChange($event, item.Id)"></td>
+      </tr>
+  </tbody>
+  <pagination-controls (pageChange)="pS = $event"></pagination-controls>
+</table>
+</div>
+
+<div *ngIf="showAccounts">
+    <table class="table" style="width: 700px; margin-left: 150px">
+      <tbody *ngFor="let user of unapprovedUsers  | paginate: { itemsPerPage:2, currentPage: pU }">
+        <br>
+        <tr>
+          <th colspan="2" class="text-center">
+            USER: {{user.Id}}
+          </th>
+      </tr>
+        <tr>
+          <th>Full name:</th>
+          <td><b>{{user.FirstName}} {{user.LastName}}</b></td>
+        </tr>
+        <tr>
+          <th>Date of Birth:</th>
+          <td>
+            {{user.DateOfBirth}}
+          </td>
+        </tr>
+        <tr>
+          <th>Document photo:</th>
+          <td>
+            <img style="width: 300px" src="https://localhost:44375{{user.DocumentPhoto}}"/>
+          </td>
+        </tr>
+        <tr>
+         <td colspan="2">
+            <input type="submit" value="APPROVE" (click)="ApproveUser(user.Id)" class="btn btn-default btn-lg btn-block">
+          </td>
+        </tr>
+      </tbody>
+      <pagination-controls (pageChange)="pU = $event"></pagination-controls>
+    </table>
+</div>
+
+<div *ngIf="showManagers">
+    <table class="table" style="width: 700px; margin-left: 150px">
+      <tbody *ngFor="let manager of managers">
+          <br><br>
+        <tr>
+          <th>
+              MANAGER: {{manager.Id}}
+          </th>
+        </tr>
+        <tr>
+          <th>Full name:</th>
+          <td><b>{{manager.FirstName}} {{manager.LastName}}</b></td>
+        </tr>
+        <tr>
+          <th>Photo:</th>
+          <td>
+              <img style="width: 300px" src="https://localhost:44375{{manager.DocumentPhoto}}"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"  class="text-center"><br><b>Allow manager creating new services: </b> </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-center"><input style="margin-left: 25px" type="checkbox" [(ngModel)]= "manager.AllowCreating" (change)="onChangeAllow($event, manager.Id)"></td>
+
+        </tr>
+      </tbody>
+    </table>
+</div>

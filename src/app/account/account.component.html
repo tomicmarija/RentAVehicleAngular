@@ -1,0 +1,56 @@
+<br>
+
+<font color="red">
+    <div style="background-color: white; margin-left: 150px" *ngIf="user.Approved == false || user.DocumentPhoto == null">
+      {{user.FirstName}} {{user.LastName}} {{note}}
+    </div>
+  </font>
+
+<form #f="ngForm" enctype="multipart/form-data" (ngSubmit)="UpdateUser(f.value, f)">
+  <table class="table" style="width: 700px; margin-left: 150px">
+    <tr>
+      <th>Full name:</th>
+      <td>{{user.FirstName}} {{user.LastName}}</td>
+    </tr>
+    <tr>
+      <th>First name:</th>
+      <th>
+        <input type="text" name="FirstName" [(ngModel)]="user.FirstName">
+      </th>
+    </tr>
+    <tr>
+      <th>Last name:</th>
+      <td>
+        <input type="text" name="LastName" [(ngModel)]="user.LastName">
+      </td>
+    </tr>
+    <tr>
+      <th>Date of Birth:</th>
+      <td>
+        <input type="date" [ngModel]="user.DateOfBirth | date:'yyyy-MM-dd'" (ngModelChange)="user.DateOfBirth = $event" name="DateOfBirth">
+      </td>
+    </tr>
+    <tr>
+      <th>Document photo:</th>
+      <td *ngIf="user.DocumentPhoto != null">
+        <img style="width: 300px" src="https://localhost:44375{{user.DocumentPhoto}}"/>
+      </td>
+    </tr>
+    <tr>
+      <td>Select photo:</td>
+      <td>
+        <input type="file" name="DocumentPhoto" (change)="onFileChange($event)" ngModel>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="submit" value="Update informations" class="btn btn-default btn-lg btn-block">
+      </td>
+    </tr>
+  </table>
+</form>
+<font color="red">
+  <p style="margin-left: 150px">
+    {{validationMessage}}
+  </p>
+</font>

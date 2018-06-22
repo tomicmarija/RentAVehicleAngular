@@ -1,0 +1,41 @@
+<br>
+<div style="width: 700px; margin-left: 150px">
+  <form #f = "ngForm" enctype="multipart/form-data" (ngSubmit)="AddBranch(f.value,f)">
+      <table class="table">
+              <tr>
+                  <th style="width: 200px">Image: </th>
+                  <td>
+                      <input type="file" name="Picture"  (change) = "onFileChanged($event)" width="350" height="300" ngModel>
+                  </td>
+              </tr>
+              <tr>
+                  <th style="width: 200px">Adress: </th>
+                  <td>
+                      <input type="text" name="Address" ngModel>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Latitude: </th>
+                  <td>
+                      <input type="number" name="Latitude" ngModel> 
+                  </td>
+              </tr>
+              <tr>
+                  <th>Longitude: </th>
+                  <td>
+                      <input type="number" name="Longitude" ngModel> 
+                  </td>
+              </tr>  
+              <tr>
+                  <td colspan="2">
+                      <input type="submit"  class="btn btn-default btn-lg"  value="Add" style="margin-left: 150px">
+                  </td>
+              </tr>
+      </table>
+  </form>
+  <font color="red">
+    <p>
+        {{validationMessage}}
+    </p>
+  </font>
+</div>

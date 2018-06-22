@@ -1,0 +1,117 @@
+<p></p>
+
+<table class="table table-striped table-dark" >
+    <tbody *ngFor = "let item of services | paginate: { itemsPerPage:5, currentPage: p }">
+        <tr *ngIf="item.Approved">
+            <td style="width: 250px;"><img width="200"  src="https://localhost:44375{{item.Logo}}" /></td>
+            <td colspan="2"><b>{{item.Name}}</b> <p>{{item.Descritpion}}</p> <p>{{item.Email}}</p> </td>
+        </tr>
+        <tr *ngIf="item.Approved">
+            <td><button (click)="callGetPriceList(item.Id)" type="button" class="btn btn-default btn-lg btn-block">Show price list</button></td>           
+            <td><button (click)="callGetVehicles(item.Id)" type="button" class="btn btn-default btn-lg btn-block">Show all available vehicles</button></td>
+            <td style="width: 250px"><button (click)="callGetGradings(item.Id)" type="button" class="btn btn-default btn-lg btn-block">Show comments</button></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div *ngIf="showVehicles && selectedService == item.Id" class="myDiv">
+                        <div class="text-center">
+                          <label style="width:200px"><font color="white">Filtrer vehicles by: </font></label>
+                            <select  [(ngModel)]="searchFilter" name="searchFilter" required style="width: 120px">
+                                    <option>Type</option>
+                                    <option>Attributes</option>
+                                    <option>Price</option>
+                            </select>  
+                            <button type="button" class="btn btn-default btn-sm" style="margin-left: 30px; width: 80px" (click)="Filter()">Filter</button>
+                        </div>
+                        <div *ngIf="showSearch" class="text-center">
+                                <input type="text" name="srcBy" [(ngModel)] = "srcBy" style="width: 500px; margin-left: 65px">
+                                <button type="button" class="btn btn-default btn-sm" style="margin-left: 30px; width: 80px" (click)="Search()">Search</button>
+                        </div>
+                        <font color="black">
+                        <table class="table table-brodered" *ngFor = "let vehicle of foundVehicles| paginate: { itemsPerPage:5, currentPage: pV }">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 250px"><img width="200" src="https://localhost:44375{{vehicle.Picture}}" /></td>
+                                    <td><p>{{vehicle.Manufacturer}} {{vehicle.Model}} Year of making: {{vehicle.YearOfMaking}}</p> <p>{{vehicle.Descritpion}}</p></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><button type="button" class="btn btn-default btn-lg btn-block" (click)="CheckForReservation(vehicle.Id, item.Id)">Reservate</button></td>           
+                                </tr>
+                            </tbody>
+                        </table>
+                    </font>
+                    <pagination-controls (pageChange)="pV = $event" ></pagination-controls>
+                </div>
+                <div *ngIf="showPriceList && selectedService == item.Id">
+                    <font color="black">
+                        <table class="table table-brodered">
+                            <thead>
+                                <tr>
+                                    <th width="450px" >Vehicle:</th>
+                                    <th width="300px"></th>
+                                    <th>Price:</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody *ngFor = "let priceItem of priceList.PriceItems  | paginate: { itemsPerPage:5, currentPage: pP }">
+                                    <tr>
+                                        <td>
+                                            <img width="300px" src="https://localhost:44375{{priceItem.Vehicle.Picture}}"/>
+                                        </td>
+                                        <td>
+                                            {{priceItem.Vehicle.Manufacturer}} {{priceItem.Vehicle.Model}}
+                                        </td>
+                                        <td>
+                                            {{priceItem.Price}} RSD
+                                        </td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </font>
+                    <pagination-controls (pageChange)="pP = $event"></pagination-controls>
+                </div>
+                <div *ngIf="showGradings && selectedService == item.Id" class="myDiv">
+                        <font color="black">
+                            <table class="table table-brodered" *ngFor = "let grading of gradings | paginate: { itemsPerPage:5, currentPage: pG }">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 250px">{{grading.Comment}}</td>
+                                        <td>{{grading.Grade}}</td>
+                                        <td>
+                                            <font style="font-style: italic">
+                                                user: {{grading.AppUser.FirstName}} {{grading.AppUser.LastName}}
+                                            </font>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <form #f="ngForm" (ngSubmit)="addGrading(f.value, f)">
+                                    <div>
+                                        <font color="white">
+                                            <label style="width: 100px" for="Comment">Comment:   </label>
+                                        </font>
+                                        <input type="text" name="Comment" ngModel style="width: 500px">
+                                        <font color="white">
+                                            <label for="Grade"> &nbsp; &nbsp; &nbsp; &nbsp;Grade:&nbsp;&nbsp;</label>
+                                        </font>
+                                        <select [(ngModel)]="grade" name="Grade" required style="width: 50px">
+                                            <option *ngFor="let grade of grades"  [value]="grade">{{grade}}</option>
+                                        </select>  
+                                        &nbsp;&nbsp;
+                                        <input class="btn btn-default btn-light btn-sm" style="width: 100px; height: 40px;" type="submit" value="Add"> 
+                                        <br>
+                                        <font color="red">
+                                                {{validationMessage}}
+                                        </font>                                        
+                                    </div> 
+                                </form>
+                            </div>
+                        </font>
+                        <pagination-controls (pageChange)="pG = $event"></pagination-controls>
+                    </div>
+            </td>
+        </tr>
+    </tbody>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</table>

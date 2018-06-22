@@ -1,0 +1,108 @@
+
+<div *ngIf="show" style="width: 500px; margin-left: 250px">
+    <form #f="ngForm" (ngSubmit)="Login(f.value, f)">
+      <div>
+        <table class="table" >
+          <tr>
+            <th style="width: 200px">Username: </th>
+            <td>
+              <input type="text" name="UserName" ngModel>
+            </td>
+          </tr>
+          <tr>
+            <th>Password: </th>
+            <td>
+              <input type="password" name="Password" ngModel>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <input type="submit" value="Log in" style="margin-left: 150px">
+            </td>
+          </tr>
+        </table>
+      </div>
+    </form>
+    <button class="btn btn-link" (click)="ChangeShow()">You don't have account? Registrate here!</button>
+    <font color="red">
+      <p>
+        {{validationMessage}}
+      </p>
+    </font>
+  </div>
+  
+  
+  <div *ngIf="!show" style="width: 500px; margin-left: 250px">
+  <form #f="ngForm" (ngSubmit)="Registrate(f.value, f)">
+    <div>
+      <table class="table">
+        <tr>
+          <th style="width: 200px"> 
+            First Name:
+          </th>
+          <td>
+            <input required type="text" name="FirstName" ngModel>
+          </td>
+        </tr>
+        <tr>
+            <th> 
+              Last Name:
+            </th>
+          <td>
+            <input required type="text" name="LastName" ngModel>
+          </td>
+        </tr>
+        <tr>
+          <th> 
+             Date of Birth:
+          </th>
+          <td>
+            <input required type="date" name="DateOfBirth" [ngModel]="today | date:'yyyy-MM-dd'">
+          </td>
+        </tr>
+        <tr>
+          <th> 
+            Email:
+          </th>
+          <td>
+            <input required type="email" name="Email" ngModel>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Username:
+          </th>
+          <td>
+            <input required type="text" name="UserName" ngModel>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Password:
+          </th>
+          <td>
+            <input required type="password" name="Password" ngModel>
+          </td>
+        </tr>
+        <tr>
+            <th>
+              Confirm password:
+            </th>
+            <td>
+              <input required type="password" name="ConfirmPassword" ngModel>
+            </td>
+          </tr>
+        <tr>
+          <td colspan="2">
+            <input type="submit" value="Registrate" style="margin-left: 150px">
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+  <button class="btn btn-link" (click)="ChangeShow()">You already have account? Login here!</button>
+  <font color="red" *ngFor="let err of errors">
+      <p>{{err}}</p>
+  </font>
+  </div>
+  

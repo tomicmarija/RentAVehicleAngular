@@ -1,0 +1,104 @@
+<p></p>
+
+<table class="table table-striped table-dark" >
+  <tbody *ngFor = "let item of services  | paginate: { itemsPerPage:5, currentPage: pS }">
+      <tr>
+          <td style="width: 250px;"><img width="200"  src="https://localhost:44375{{item.Logo}}" /></td>
+          <td colspan="2"><b>{{item.Name}}</b> <p>{{item.Descritpion}}</p> <p>{{item.Email}}</p> </td>
+          <td>
+              <br>
+              <button type="button" class="btn btn-default btn-sm btn-block" [routerLink] = "['/addBranch', item.Id]">Add new branch</button>
+              <br>
+              <button  type="button" class="btn btn-default btn-sm btn-block" [routerLink] = "['/addVehicle', item.Id]">Add new vehicle</button>
+          </td>
+      </tr>
+      <tr>
+        <td colspan="4"><button (click)="callGetVehicles(item.Id)" type="button" class="btn btn-default btn-lg btn-block">Show all vehicles</button></td>
+      </tr>
+      <tr>
+        <td colspan="4"><button (click)="callGetBranches(item.Id)" type="button" class="btn btn-default btn-lg btn-block">Show all branches</button></td>
+      </tr>
+      <tr>
+          <td colspan="4">
+                <div *ngIf="showVehicles && serviceId == item.Id" class="myDiv">
+                        <font color="black">
+                            <table class="table table-brodered" *ngFor = "let vehicle of vehicles | paginate: { itemsPerPage:5, currentPage: pV }">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 250px"><img width="200" src="https://localhost:44375{{vehicle.Picture}}" /></td>
+                                        <td style="width:650px"><p>{{vehicle.Manufacturer}} {{vehicle.Model}} Year of making: {{vehicle.YearOfMaking}}</p> <p>{{vehicle.Descritpion}}</p></td>
+                                        <td>Enabled: <input type="checkbox" [(ngModel)]= "vehicle.Enable" (change)="onChange($event, vehicle.Id)"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </font>
+                        <pagination-controls (pageChange)="pV = $event"></pagination-controls>
+                </div>
+                <div *ngIf="showBranches && serviceId == item.Id" class="myDiv">
+                        <font color="black">
+                            <table class="table table-brodered" *ngFor = "let branch of branches  | paginate: { itemsPerPage:5, currentPage: pB }">
+                                <tbody>
+                                    <tr>
+                                            <td style="width: 250px"><img width="250" height="220" src="https://localhost:44375{{branch.Picture}}" /></td>
+                                            <td style="width: 450px"><p> Address: {{branch.Address}}</p></td>
+                                            <td>
+                                                <agm-map [(latitude)]="branch.Latitude" [(longitude)]="branch.Longitude" [zoom]="12">
+                    
+                                                    <agm-marker [latitude]="branch.Latitude" [longitude]="branch.Longitude" [label]="branch.Address">
+                                                    </agm-marker>
+                                                </agm-map>
+                                            </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </font>
+                        <pagination-controls (pageChange)="pB = $event"></pagination-controls>
+                </div>
+          </td>
+      </tr>
+  </tbody>
+  <pagination-controls (pageChange)="pS = $event"></pagination-controls>
+</table>
+
+<button (click)="showForm()" type="button" class="btn btn-default btn-lg btn-block">Add new service</button>          
+
+
+<div *ngIf="showAddForm">
+  <form #f="ngForm" enctype="multipart/form-data" (ngSubmit)="AddService(f.value, f)">
+    <table class="table">
+        <tr>
+            <th style="width: 200px">Name: </th>
+            <td>
+              <input type="text" name="Name" ngModel>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px">Logo: </th>
+            <td>
+                <input type="file" name="Logo"  (change) = "onFileChanged($event)" width="350" height="300" ngModel>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px">Email: </th>
+            <td>
+              <input type="email" name="Email" ngModel>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px">Description: </th>
+            <td>
+              <input type="text" name="Descritpion" ngModel>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+              <input type="submit"  class="btn btn-default btn-lg"  value="Add service" style="margin-left: 150px">
+            </td>
+        </tr>
+    </table>
+  </form>
+</div>
+
+
+
+

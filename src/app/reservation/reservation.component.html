@@ -1,0 +1,98 @@
+<br>
+
+<table class="table table-striped table-dark">
+  <tr>
+    <td style="width:550px">
+      <img width="500" src="https://localhost:44375{{vehicle.Picture}}" />
+    </td>
+    <td>
+      <div>
+          Manufacturer:&nbsp;{{vehicle.Manufacturer}} <br>
+          Model: &nbsp;{{vehicle.Model}}<br>
+          Year of Making:&nbsp;{{vehicle.YearOfMaking}}<br>
+          Description:&nbsp;{{vehicle.Descritpion}}<br>
+          Price per day:&nbsp;{{priceItem.Price * 24}} RSD       
+      </div>
+    </td>
+  </tr>
+</table>
+
+<br>
+
+
+<form #f="ngForm" (ngSubmit)="Reservate(f.value, f)" *ngIf="show == true">
+  <table class="table table-dark">
+    <tr>
+      <th>
+        Choose free period:
+      </th>
+      <td colspan="3">
+        <select name="period" required style="width: 760px" [ngModel]="selectedDate" (ngModelChange)="changeSelectedData($event)">
+          <option *ngFor="let date of freeDates" [ngValue]="date">{{date.startDate | date:'dd-MMM-yyyy'}} - {{date.endDate | date:'dd-MMM-yyyy'}}</option>
+        </select>
+      </td>
+    </tr>
+    <tr style="margin-left: 100px">
+      <th>Start date: </th>
+      <td>
+          <input type="date" name="StartDate" [ngModel]="dateNow | date:'yyyy-MM-dd'" 
+          (ngModelChange)="dateEnd = $event" [min]="selectedDate.startDate | date:'yyyy-MM-dd'" [max]="selectedDate.endDate | date:'yyyy-MM-dd'" onkeydown="return false">        
+      </td>
+
+      <th>End date: </th>
+      <td>
+          <input type="date"  name="EndDate" [ngModel]="dateEnd | date:'yyyy-MM-dd'"  [min]="dateEnd | date:'yyyy-MM-dd'" [max]="selectedDate.endDate | date:'yyyy-MM-dd'" onkeydown="return false">
+      </td>
+    </tr>
+    <tr>
+      <th>Start branch: </th>
+      <td colspan="3">
+        <select name="StartBranchId"  required style="width: 760px" [(ngModel)]="selectedStartBranch">
+           <option *ngFor="let branch of branches"  [value]="branch.Id">{{branch.Address}}</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4"  >
+        <agm-map [(latitude)]="startLatitude" [(longitude)]="startLongitude" [zoom]="18" (mapClick)="placeMarker($event)" >
+            <div *ngFor="let info of branches">
+              <agm-marker [latitude]="info.Latitude" [longitude]="info.Longitude" [label]="info.Address" (markerClick)="onStartMarkerClick(info)">
+              </agm-marker>
+            </div>
+        </agm-map>
+      </td>
+    </tr>
+    <tr>
+      <th>End branch:</th>
+      <td colspan="3">
+        <select  name="EndBranchId" required style="width: 760px"  [(ngModel)]="selectedEndBranch">
+          <option *ngFor="let branch of branches"  [value]="branch.Id">{{branch.Address}}</option>
+         </select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4"  >
+        <agm-map [(latitude)]="endLatitude" [(longitude)]="endLongitude" [zoom]="18" (mapClick)="placeMarker($event)" >
+          <div *ngFor="let info of branches">
+            <agm-marker [latitude]="info.Latitude" [longitude]="info.Longitude" [label]="info.Address" (markerClick)="onEndMarkerClick(info)">
+            </agm-marker>
+          </div>
+        </agm-map>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <input class="btn btn-default btn-lg btn-block" type="submit" value="Reservate"> 
+      </td>
+    </tr>
+  </table>
+</form>
+
+<font color="red">
+    <div *ngIf="show == false">
+      You successfully reservated this vehicle in period {{dateNow | date: 'dd-MMM-yyyy'}} - {{dateEnd | date: 'dd-MMM-yyyy'}}.
+      <br>
+      <a class="btn btn-link" [routerLink] = "['/home']">Go on home page and choose another vehicle!</a>
+    </div>
+  </font>
+   

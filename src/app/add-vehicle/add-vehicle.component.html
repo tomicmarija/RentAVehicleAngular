@@ -1,0 +1,59 @@
+<br>
+<div style="width: 700px; margin-left: 150px">
+  <form #f = "ngForm" enctype="multipart/form-data" (ngSubmit)="AddVehicle(f.value,f)">
+      <table class="table">
+              <tr>
+                  <th style="width: 200px">Model: </th>
+                  <td>
+                      <input type="text" name="Model" ngModel>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Manufacturer: </th>
+                  <td>
+                      <input type="text" name="Manufacturer" ngModel> 
+                  </td>
+              </tr>
+              <tr>
+                  <th>Year of making: </th>
+                  <td>
+                      <input type="number" name="YearOfMaking" ngModel> 
+                  </td>
+              </tr>
+              <tr>
+                  <th style="width: 200px">Image: </th>
+                  <td>
+                      <input type="file" name="Foto"  (change) = "onFileChanged($event)" width="350" height="300" ngModel>
+                  </td>
+              </tr>
+              <tr>
+                  <th style="width:  200px">Type: </th>
+                  <select [(ngModel)]="TypeId" name="TypeId" required style="width: 150px; margin-left: 10px">
+                       <option *ngFor="let type of types"  [value]="type.Id" ng-selected="type.Name">{{type.Name}}</option>
+                  </select> 
+              </tr>
+              <tr>
+                  <th>Description: </th>
+                  <td>
+                       <input type="text" name="Descritpion" ngModel> 
+                  </td>
+              </tr>
+              <tr>
+                  <th>Price per hour: </th>
+                  <td>
+                      <input type="number" name="Price" ngModel>
+                  </td>
+              </tr>
+              <tr>
+                  <td colspan="2">
+                      <input type="submit"  class="btn btn-default btn-lg"  value="Add" style="margin-left: 150px">
+                  </td>
+              </tr>
+      </table>
+  </form>
+  <font color="red">
+    <p>
+        {{validationMessage}}
+    </p>
+  </font>
+</div>
